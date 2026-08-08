@@ -8,14 +8,14 @@
 #include <UXCpp/Graphics/Renderer.h>
 #include <GL/gl.h>
 #include <iostream>
+#include <UXCpp/Graphics/Text.h>
 
 namespace uxcpp::graphics {
 
 class OpenGLRenderer : public Renderer {
 public:
-    OpenGLRenderer() {
-        // Initialize GL state if necessary
-    }
+    explicit OpenGLRenderer(std::unique_ptr<TextRenderer> textRenderer) 
+        : m_textRenderer(std::move(textRenderer)) {}
 
     void beginFrame() override {
         glClear(GL_COLOR_BUFFER_BIT);
@@ -52,9 +52,9 @@ public:
     }
 
     void drawText(Point pos, const std::string& text, Color color) override {
-        // Basic OpenGL doesn't have built-in text rendering. 
-        // In a full implementation, we would use FreeType or a font atlas.
-        // For this skeleton, we log the attempt to avoid adding heavy dependencies now.
+        if (m_textRenderer) {
+            m_textRenderer->renderText(text, pos.x, pos.y, 16.0f, color);
+        }
     }
 
     void setClipRect(const Rect& rect) override {
@@ -63,7 +63,7 @@ public:
     }
 
 private:
-    // OpenGL state management would go here
+    std::unique_ptr<TextRenderer> m_textRenderer;
 };
 
 } // namespace uxcpp::graphics

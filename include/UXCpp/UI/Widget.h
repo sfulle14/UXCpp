@@ -11,6 +11,8 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <UXCpp/UI/Widget.h>
+#include <UXCpp/UI/LayoutParams.h>
 
 namespace uxcpp::ui {
 
@@ -36,6 +38,9 @@ public:
     // Geometry
     void setBounds(float x, float y, float w, float h) { m_bounds = {x, y, w, h}; }
     graphics::Rect getBounds() const { return m_bounds; }
+
+    LayoutParams& layoutParams() { return m_layoutParams; }
+    const LayoutParams& layoutParams() const { return m_layoutParams; }
 
     // Lifecycle & Events
     virtual void onInit() {}
@@ -74,6 +79,7 @@ protected:
     std::string m_name;
     std::string m_styleClass;
     graphics::Rect m_bounds{0, 0, 0, 0};
+    LayoutParams m_layoutParams;
     std::weak_ptr<Widget> m_parent;
     std::vector<std::shared_ptr<Widget>> m_children;
 };
