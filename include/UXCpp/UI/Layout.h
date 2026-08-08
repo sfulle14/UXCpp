@@ -24,17 +24,51 @@ public:
     }
 
     /**
-     * @brief Simple linear layout calculation.
+     * @brief Advanced layout calculation considering margins, padding, and stretch factors.
      */
     void performLayout() {
-        float offset = 0;
+        const auto& params = layoutParams();
+        float currentX = m_bounds.x + params.padding.left;
+        float currentY = m_bounds.y + params.padding.top;
+
+        float totalStretch = 0;
+        float fixedSizeSum = 0;
+
         for (auto& child : m_children) {
-            if (m_orientation == LayoutOrientation::Vertical) {
-                child->setBounds(m_bounds.x, m_bounds.y + offset, m_bounds.width, 30.0f);
-                offset += 35.0f;
+            const auto& cp = child->layoutParams();
+            if (cp.stretch > 0) {
+                totalStretch += cp.stretch;
             } else {
-                child->setBounds(m_bounds.x + offset, m_bounds.y, 100.0f, m_bounds.height);
-                offset += 105.0f;
+                if (m_orientation == LayoutOrientation::Vertical) {
+                    fixedSizeSum += (cp.preferredHeight > 0 ? cp.preferredHeight : 30.0f) + cp.margin.top + cp.margin.bottom;
+                } else {
+                    fixedSizeSum += (cp.preferredWidth > 0 ? cp.preferredWidth : 100.0f) + cp.margin.left + cp.margin.right;
+                }
+            }
+        }
+
+        float availableSpace = (m_orientation == LayoutOrientation::Vertical) 
+            ? (m_bounds.height - params.padding.top - params.padding.bottom - fixedSizeSum)
+            : (m_bounds.width - params.padding.left - params.padding.right - fixedSizeSum);
+
+        for (auto& child : m_children) {
+            const auto& cp = child->layoutParams();
+            float finalW, finalH;
+
+            if (m_orientation == LayoutOrientation::Vertical) {
+                finalW = (cp.preferredWidth > 0) ? cp.preferredWidth : (m_bounds.width - params.padding.left - params.padding.right);
+                finalH = (cp.stretch > 0) ? (availableSpace * (cp.stretch / totalStretch)) : (cp.preferredHeight > 0 ? cp.preferredHeight : 30.0f);
+                
+                float xPos = currentX + cp.margin.left;
+                child->setBounds(xPos, currentY + cp.margin.top, finalW, finalH);
+                currentY += finalH + cp.margin.top + cp.margin.bottom;
+            } else {
+                finalH = (cp.preferredHeight > 0) ? cp.preferredHeight : (m_bounds.height - params.padding.top - params.padding.bottom);
+                finalW = (cp.stretch > 0) ? (availableSpace * (cp.stretch / totalStretch)) : (cp.preferredWidth > 0 ? cp.preferredWidth : 100.0f);
+                
+                float yPos = currentY + cp.margin.top;
+                child->setBounds(currentX + cp.margin.left, yPos, finalW, finalH);
+                currentX += finalW + cp.margin.left + cp.margin.right;
             }
         }
     }

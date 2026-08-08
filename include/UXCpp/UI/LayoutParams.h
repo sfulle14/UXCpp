@@ -20,6 +20,7 @@ struct LayoutParams {
     Alignment verticalAlign = Alignment::Start;
     float preferredWidth = -1.0f; // -1 for auto
     float preferredHeight = -1.0f;
+    float stretch = 0.0f; // 0 for fixed, >0 for proportional expansion
 };
 
 } // namespace uxcpp::ui
