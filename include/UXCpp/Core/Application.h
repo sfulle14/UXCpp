@@ -8,6 +8,7 @@
 #include <string>
 #include <memory>
 #include <functional>
+#include <vector>
 
 namespace uxcpp::core {
 
@@ -21,6 +22,21 @@ public:
     static Application& getInstance() {
         static Application instance;
         return instance;
+    }
+
+    void addOverlayWidget(std::shared_ptr<ui::Widget> widget) {
+        m_overlays.push_back(widget);
+    }
+
+    void removeOverlayWidget(std::shared_ptr<ui::Widget> widget) {
+        m_overlays.erase(
+            std::remove(m_overlays.begin(), m_overlays.end(), widget),
+            m_overlays.end()
+        );
+    }
+
+    const std::vector<std::shared_ptr<ui::Widget>>& getOverlays() const {
+        return m_overlays;
     }
 
     // Delete copy/move to ensure singleton integrity
@@ -52,6 +68,7 @@ private:
     ~Application() = default;
 
     bool m_running;
+    std::vector<std::shared_ptr<ui::Widget>> m_overlays;
 };
 
 } // namespace uxcpp::core

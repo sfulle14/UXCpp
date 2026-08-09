@@ -51,6 +51,19 @@ public:
     virtual bool onPointerDown(graphics::Point p) { return false; }
     virtual bool onKeyDown(int key) { return false; }
 
+    /**
+     * @brief Called when the widget gains keyboard focus.
+     */
+    virtual void onFocusGained() {}
+
+    /**
+     * @brief Called when the widget loses keyboard focus.
+     */
+    virtual void onFocusLost() {}
+
+    bool isFocused() const { return m_isFocused; }
+    void setFocused(bool focused) { m_isFocused = focused; }
+
     // Signals for common events
     uxcpp::core::Signal<> onClicked;
 
@@ -80,6 +93,7 @@ protected:
     std::string m_styleClass;
     graphics::Rect m_bounds{0, 0, 0, 0};
     LayoutParams m_layoutParams;
+    bool m_isFocused = false;
     std::weak_ptr<Widget> m_parent;
     std::vector<std::shared_ptr<Widget>> m_children;
 };

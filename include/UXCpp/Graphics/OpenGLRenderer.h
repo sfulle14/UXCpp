@@ -51,6 +51,20 @@ public:
         glEnd();
     }
 
+    /**
+     * @brief Draws a focus ring around the specified rectangle.
+     */
+    void drawFocusRing(const Rect& rect, Color color) {
+        glColor4f(color.r, color.g, color.b, color.a);
+        glLineWidth(2.0f);
+        glBegin(GL_LINE_LOOP);
+            glVertex2f(rect.x - 2, rect.y - 2);
+            glVertex2f(rect.x + rect.width + 2, rect.y - 2);
+            glVertex2f(rect.x + rect.width + 2, rect.y + rect.height + 2);
+            glVertex2f(rect.x - 2, rect.y + rect.height + 2);
+        glEnd();
+    }
+
     void drawText(Point pos, const std::string& text, Color color) override {
         if (m_textRenderer) {
             m_textRenderer->renderText(text, pos.x, pos.y, 16.0f, color);

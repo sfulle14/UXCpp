@@ -6,6 +6,7 @@
 #pragma once
 
 #include <UXCpp/UI\Widget.h>
+#include <UXCpp/Core/Property.h>
 
 namespace uxcpp::ui {
 
@@ -33,6 +34,10 @@ public:
         const auto& style = getStyle();
         renderer.drawRect(m_bounds, style.backgroundColor); 
         renderer.drawText({m_bounds.x + 5, m_bounds.y + 5}, m_label, style.foregroundColor);
+
+        if (isFocused()) {
+            renderer.drawFocusRing(m_bounds, graphics::Color::Blue());
+        }
     }
 
     bool onPointerDown(graphics::Point p) override {
@@ -76,10 +81,18 @@ private:
 
 class ProgressBar : public Widget {
 public:
-    ProgressBar(std::string name) 
-        : Widget(std::move(name), "progressbar"), m_progress(0.0f) {}
+    ProgressBar(std::string name, core::Property<float>* valueSource = nullptr) 
+        : Widget(std::move(name), "progressbar"), m_valueSource(valueSource) {
+        if (m_valueSource) {
+            m_valueSource->observe([this](const float& val) {
+                this->setProgress(val);
+            });
+        }
+    }
 
-    void setProgress(float value) { m_progress = std::clamp(value, 0.0f, 1.0f); }
+    void setProgress(float value) { 
+        m_progress = std::clamp(value, 0.0f, 1.0f); 
+    }
 
     void onDraw(graphics::Renderer& renderer) override {
         renderer.drawRect(m_bounds, graphics::Color::White());
@@ -88,7 +101,58 @@ public:
     }
 
 private:
-    float m_progress;
+    float m_progress = 0.0f;
+    core::Property<float>* m_valueSource;
+};
+
+class ComboBox : public Widget {
+public:
+    ComboBox(std::string name, const std::vector<std::string>& items) 
+        : Widget(std::move(name), "combobox"), m_items(items), m_selectedIndex(-1), m_isOpen(false) {
+        m_list = std::make_shared<DropdownList>("ComboList", items);
+    }
+
+    void onDraw(graphics::Renderer& renderer) override {
+        // Draw the main button part
+        renderer.drawRect(m_bounds, getStyle().backgroundColor);
+        std::string text = m_selectedIndex == -1 ? "Select..." : m_items[m_selectedIndex];
+        renderer.drawText({m_bounds.x + 5, m_bounds.y + 5}, text, getStyle().foregroundColor);
+        renderer.drawText({m_bounds.x + m_bounds.width - 15, m_bounds.y + 5}, "v", getStyle().foregroundColor);
+    }
+
+    bool onPointerDown(graphics::Point p) override {
+        if (m_bounds.contains(p)) {
+            toggleList();
+            return true;
+        }
+        return false;
+    }
+
+    void toggleList() {
+        m_isOpen = !m_isOpen;
+        if (m_isOpen) {
+            // Position the list below the combobox
+            m_list->setBounds(m_bounds.x, m_bounds.y + m_bounds.height, m_bounds.width, m_items.size() * 25.0f);
+            core::Application::getInstance().addOverlayWidget(m_list);
+        } else {
+            core::Application::getInstance().removeOverlayWidget(m_list);
+        }
+    }
+
+    void selectItem(int index) {
+        m_selectedIndex = index;
+        m_isOpen = false;
+        core::Application::getInstance().removeOverlayWidget(m_list);
+        onClicked.emit(); // Notify that selection changed
+    }
+
+    std::shared_ptr<DropdownList> getList() const { return m_list; }
+
+private:
+    std::vector<std::string> m_items;
+    int m_selectedIndex;
+    bool m_isOpen;
+    std::shared_ptr<DropdownList> m_list;
 };
 
 } // namespace uxcpp::ui
