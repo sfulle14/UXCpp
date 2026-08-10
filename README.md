@@ -17,29 +17,25 @@ Designed as a clean-room, permissive replacement for Qt, allowing for closed-sou
 - [x] **Phase 3: Rendering Pipeline** (OpenGL Backend, Vector Primitives)
 - [x] **Phase 4: Widget Base Class & Tree Management** (Retained Mode, Event Propagation)
 - [x] **Phase 5: Layout Engine & Essential UI Controls** (Box/Grid Layouts, Styling System, Basic Widgets)
+- [x] **Phase 6: Advanced Framework Features** (Property Binding, Modal Dialogs, TableViews, Declarative UI Loading)
 
-## Future Roadmap to Full Qt Replacement
-To reach parity with a professional framework like Qt, the following milestones are planned:
+## Comparison with Qt / Missing Features
+While UXCpp provides the core architectural foundations of a professional GUI framework, it is a lightweight alternative. To reach full parity with the massive Qt ecosystem, the following areas would need further development:
 
-### 1. Advanced Input & Interaction
-- [ ] **Keyboard Focus Management**: Tab-navigation and focus rings.
-- [ ] **Complex Event Handling**: Drag-and-drop, right-click context menus.
-- [ ] **Input Bridge Refinement**: Full mapping of OS events to Widget methods.
+### 1. Component Depth
+- **Widget Library**: Qt offers hundreds of specialized widgets (e.g., `QTreeWidget`, `QCalendarWidget`). UXCpp provides the essential primitives and composite patterns to build these.
+- **Rich Text**: UXCpp currently supports basic text rendering; it lacks a full HTML/CSS rich-text engine like `QTextDocument`.
 
-### 2. High-Fidelity Rendering
-- [ ] **Text Engine Integration**: Integrate FreeType/HarfBuzz for professional typography and RTL support.
-- [ ] **Image Pipeline**: Implement a full texture loader (stb_image) and sprite batching.
-- [ ] **Shader System**: Move from fixed-function OpenGL to GLSL shaders for rounded corners, gradients, and shadows.
+### 2. System Integration & Modules
+- **Network & Database**: Unlike Qt, UXCpp does not include built-in modules for HTTP/FTP (`QtNetwork`) or SQL databases (`QtSql`). It is designed to be paired with existing C++ libraries (e.g., `curl`, `sqlite3`).
+- **OS Abstractions**: Qt provides deep abstractions for file systems and processes. UXCpp focuses strictly on the UI layer, relying on standard C++ (`std::filesystem`) or OS APIs.
 
-### 3. Complex UI Components
-- [ ] **Composite Widgets**: Dropdowns (ComboBox), Tabbed Views, TreeViews, and Data Tables.
-- [ ] **Scrollable Containers**: Full implementation of `ScrollArea` with scrollbars and virtualized lists.
-- [ ] **Modal System**: Dialog windows and overlay layers.
+### 3. Advanced Tooling & DX
+- **Visual Designer**: UXCpp implements a declarative loader, but lacks a visual "Drag-and-Drop" editor like Qt Designer.
+- **Animation Framework**: While it supports basic updates, it does not yet have a dedicated animation system (like `QPropertyAnimation`).
 
-### 4. Framework Tooling & DX
-- [ ] **Declarative UI**: A DSL or JSON/XML loader to define UIs without writing C++ code for every widget.
-- [ ] **Binding System**: Property binding (similar to Qt's QProperty) for reactive data updates.
-- [ ] **Packaging**: Full CPack configuration for binary distribution.
+### 4. Internationalization (i18n)
+- **Translation**: UXCpp does not currently include a translation framework for multi-language support (`.ts`/`.qm` files).
 
 ## Build Requirements
 - CMake 3.22+
