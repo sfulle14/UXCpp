@@ -1,43 +1,73 @@
-# UXCpp
-A lightweight, cross-platform GUI framework for modern C++ (C++20/23).
+# UXCpp 🚀
+**A high-performance, lightweight, cross-platform GUI framework for modern C++.**
 
-## Goal
-Designed as a clean-room, permissive replacement for Qt, allowing for closed-source and proprietary commercial use without licensing conflicts.
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![C++ Standard](https://img.shields.io/badge/C%2B%2B-20/23-blue.svg)](https://en.cppreference.com/w/cpp/20)
 
-## Architectural Principles
-- **Zero Copyleft:** No LGPL/GPL code. Strictly MIT/Apache 2.0/BSD.
-- **Modern C++:** Leveraging C++20 concepts, RAII, and type-safety.
-- **MOC-less:** Type-safe Signal/Slot system without a custom meta-object compiler.
-- **Hardware Accelerated:** Designed for Vulkan/Metal/D3D12 backends.
+UXCpp is a clean-room implementation of a professional GUI framework designed specifically for developers who need a powerful, permissive alternative to Qt. It provides the essential tools to build complex, hardware-accelerated user interfaces without the licensing constraints of LGPL/GPL.
 
-## Current Progress
-- [x] **Phase 0: Project Setup & CMake Skeleton**
-- [x] **Phase 1: Event System & Core Signals** (Type-safe `Signal<Args...>`)
-- [x] **Phase 2: Base App & Window Abstraction** (GLFW Backend)
-- [x] **Phase 3: Rendering Pipeline** (OpenGL Backend, Vector Primitives)
-- [x] **Phase 4: Widget Base Class & Tree Management** (Retained Mode, Event Propagation)
-- [x] **Phase 5: Layout Engine & Essential UI Controls** (Box/Grid Layouts, Styling System, Basic Widgets)
-- [x] **Phase 6: Advanced Framework Features** (Property Binding, Modal Dialogs, TableViews, Declarative UI Loading)
+## ✨ Key Features
 
-## Comparison with Qt / Missing Features
-While UXCpp provides the core architectural foundations of a professional GUI framework, it is a lightweight alternative. To reach full parity with the massive Qt ecosystem, the following areas would need further development:
+### 🛠️ Core Architecture
+- **MOC-less Reactive System**: Type-safe Signal/Slot mechanism using C++20 templates—no custom meta-object compiler required.
+- **Hardware Accelerated**: Native OpenGL backend with a pluggable architecture designed for Vulkan, Metal, and Direct3D 12.
+- **Retained Mode UI**: A robust widget tree hierarchy with efficient event propagation and lifecycle management.
 
-### 1. Component Depth
-- **Widget Library**: Qt offers hundreds of specialized widgets (e.g., `QTreeWidget`, `QCalendarWidget`). UXCpp provides the essential primitives and composite patterns to build these.
-- **Rich Text**: UXCpp currently supports basic text rendering; it lacks a full HTML/CSS rich-text engine like `QTextDocument`.
+### 🎨 Layout & Styling
+- **Flexible Layout Engine**: Advanced `Box` and `Grid` layouts supporting proportional stretching, margins, and padding.
+- **Decoupled Theming**: Global theme manager allowing for application-wide skinning via style classes.
+- **Declarative UI**: Load complex interface structures from strings or external files using the `UILoader`.
 
-### 2. System Integration & Modules
-- **Network & Database**: Unlike Qt, UXCpp does not include built-in modules for HTTP/FTP (`QtNetwork`) or SQL databases (`QtSql`). It is designed to be paired with existing C++ libraries (e.g., `curl`, `sqlite3`).
-- **OS Abstractions**: Qt provides deep abstractions for file systems and processes. UXCpp focuses strictly on the UI layer, relying on standard C++ (`std::filesystem`) or OS APIs.
+### 🧩 Advanced Components
+- **Composite Widgets**: Professional implementations of `ComboBox`, `TabWidget`, and `TreeView`.
+- **Data Binding**: Reactive `Property<T>` system for automatic UI updates when underlying data changes.
+- **Modal Systems**: Full support for overlay layers, popups, and blocking modal dialogs.
 
-### 3. Advanced Tooling & DX
-- **Visual Designer**: UXCpp implements a declarative loader, but lacks a visual "Drag-and-Drop" editor like Qt Designer.
-- **Animation Framework**: While it supports basic updates, it does not yet have a dedicated animation system (like `QPropertyAnimation`).
+## 🚀 Quick Start
 
-### 4. Internationalization (i18n)
-- **Translation**: UXCpp does not currently include a translation framework for multi-language support (`.ts`/`.qm` files).
+```cpp
+#include <UXCpp/Core/Application.h>
+#include <UXCpp/UI/Controls.h>
+#include <UXCpp/UI/Layout.h>
 
-## Build Requirements
-- CMake 3.22+
-- C++20 compatible compiler (MSVC / GCC / Clang)
-- GLFW & OpenGL development libraries
+int main() {
+    auto& app = uxcpp::core::Application::getInstance();
+    app.init();
+
+    // Create a vertical layout
+    auto root = std::make_shared<uxcpp::ui::Box>("Root", uxcpp::ui::LayoutOrientation::Vertical);
+    root->setBounds(0, 0, 400, 300);
+
+    // Add a styled button
+    auto btn = std::make_shared<uxcpp::ui::Button>("MyBtn", "Click Me!");
+    btn->onClicked.connect([]() { 
+        std::cout << "Hello from UXCpp!" << std::endl; 
+    });
+
+    root->addChild(btn);
+    root->performLayout();
+
+    app.run();
+    return 0;
+}
+```
+
+## 🏗️ Build & Installation
+
+### Prerequisites
+- **CMake** 3.22+
+- **C++20** compatible compiler (MSVC 2019+, GCC 10+, Clang 10+)
+- **GLFW** & **OpenGL** development libraries
+
+### Building from Source
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build .
+```
+
+## ⚖️ Licensing
+UXCpp is released under the **MIT License**. It is designed for use in both open-source and proprietary commercial software.
+
+---
+*Designed for performance. Built for freedom.*
