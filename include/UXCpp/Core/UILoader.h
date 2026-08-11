@@ -62,6 +62,19 @@ private:
             ss >> std::quoted(name) >> comma >> std::quoted(orientStr);
             ui::LayoutOrientation orient = (orientStr == "Vertical") ? ui::LayoutOrientation::Vertical : ui::LayoutOrientation::Horizontal;
             widget = std::make_shared<ui::Box>(name, orient);
+        } else if (type == "TabWidget") {
+            std::string name;
+            ss >> std::quoted(name);
+            widget = std::make_shared<ui::TabWidget>(name);
+        } else if (type == "TreeView") {
+            std::string name;
+            ss >> std::quoted(name);
+            widget = std::make_shared<ui::TreeView>(name);
+        } else if (type == "ComboBox") {
+            std::string name;
+            // Simplified: just the name for now, items added programmatically
+            ss >> std::quoted(name);
+            widget = std::make_shared<ui::ComboBox>(name, std::vector<std::string>{});
         }
 
         // Consume closing ']'

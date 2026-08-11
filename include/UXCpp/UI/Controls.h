@@ -18,7 +18,13 @@ public:
     void setText(std::string text) { m_text = std::move(text); }
 
     void onDraw(graphics::Renderer& renderer) override {
-        renderer.drawText({m_bounds.x, m_bounds.y}, m_text, getStyle().foregroundColor);
+        // Use TextLayout for multi-line support
+        graphics::TextLayout layout(m_text, m_bounds.width - 10.0f);
+        const auto& lines = layout.getLines();
+
+        for (size_t i = 0; i < lines.size(); ++i) {
+            renderer->drawText({m_bounds.x + 5, m_bounds.y + 5 + (i * 18.0f)}, lines[i].text, getStyle().foregroundColor);
+        }
     }
 
 private:

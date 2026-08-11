@@ -7,8 +7,10 @@
 #include <UXCpp/Windowing/GLFWWindow.h>
 #include <UXCpp/Graphics/OpenGLRenderer.h>
 #include <UXCpp/Core/InputManager.h>
+#include <UXCpp/Core/Animator.h>
 #include <iostream>
 #include <memory>
+#include <chrono>
 
 namespace uxcpp::core {
 
