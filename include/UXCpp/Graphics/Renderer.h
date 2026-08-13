@@ -6,6 +6,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 namespace uxcpp::graphics {
 
@@ -42,7 +43,9 @@ public:
     virtual void endFrame() = 0;
 
     virtual void drawRect(const Rect& rect, Color color) = 0;
+    virtual void drawLine(Point a, Point b, Color color) = 0;
     virtual void drawCircle(Point center, float radius, Color color) = 0;
+    virtual void drawFocusRing(const Rect& rect, Color color) = 0;
     virtual void drawText(Point pos, const std::string& text, Color color) = 0;
     virtual void setClipRect(const Rect& rect) = 0;
     virtual void clear(Color color) = 0;

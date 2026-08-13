@@ -5,10 +5,19 @@
 
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <memory>
 #include <functional>
 #include <vector>
+
+#include <UXCpp/Core/MessageBox.h>
+
+struct GLFWwindow;
+
+namespace uxcpp::ui {
+class Widget;
+}
 
 namespace uxcpp::core {
 
@@ -38,6 +47,14 @@ public:
     const std::vector<std::shared_ptr<ui::Widget>>& getOverlays() const {
         return m_overlays;
     }
+
+    void setClipboardText(const std::string& text);
+    std::string getClipboardText() const;
+
+    std::string openFileDialog(const std::string& title, const std::vector<std::string>& filters = {});
+    std::string saveFileDialog(const std::string& title, const std::vector<std::string>& filters = {});
+    std::shared_ptr<class SystemTrayIcon> createSystemTrayIcon(const std::string& tooltip);
+    void showMessageBox(const std::string& title, const std::string& message, MessageBoxType type = MessageBoxType::Information);
 
     // Delete copy/move to ensure singleton integrity
     Application(const Application&) = delete;

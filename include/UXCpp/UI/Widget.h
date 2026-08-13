@@ -39,6 +39,19 @@ public:
     void setBounds(float x, float y, float w, float h) { m_bounds = {x, y, w, h}; }
     graphics::Rect getBounds() const { return m_bounds; }
 
+    int getTabIndex() const { return m_tabIndex; }
+    void setTabIndex(int index) { m_tabIndex = index; }
+
+    // Accessibility
+    void setAccessibleName(std::string name) { m_accessibleName = std::move(name); }
+    const std::string& getAccessibleName() const { return m_accessibleName; }
+
+    void setAccessibleDescription(std::string desc) { m_accessibleDescription = std::move(desc); }
+    const std::string& getAccessibleDescription() const { return m_accessibleDescription; }
+
+    void setAccessibleRole(std::string role) { m_accessibleRole = std::move(role); }
+    const std::string& getAccessibleRole() const { return m_accessibleRole; }
+
     LayoutParams& layoutParams() { return m_layoutParams; }
     const LayoutParams& layoutParams() const { return m_layoutParams; }
 
@@ -50,6 +63,22 @@ public:
     // Input handling
     virtual bool onPointerDown(graphics::Point p) { return false; }
     virtual bool onKeyDown(int key) { return false; }
+
+    /**
+     * @brief Called when a drag-and-drop operation enters this widget.
+     */
+    virtual void onDragEnter(const core::DragDropPayload& payload) {}
+
+    /**
+     * @brief Called when a drag-and-drop operation leaves this widget.
+     */
+    virtual void onDragLeave() {}
+
+    /**
+     * @brief Called when a drag-and-drop operation is dropped onto this widget.
+     * @return true if the drop was accepted.
+     */
+    virtual bool onDrop(const core::DragDropPayload& payload) { return false; }
 
     /**
      * @brief Called when the widget gains keyboard focus.
@@ -92,6 +121,10 @@ protected:
     std::string m_name;
     std::string m_styleClass;
     graphics::Rect m_bounds{0, 0, 0, 0};
+    int m_tabIndex = 0;
+    std::string m_accessibleName;
+    std::string m_accessibleDescription;
+    std::string m_accessibleRole;
     LayoutParams m_layoutParams;
     bool m_isFocused = false;
     std::weak_ptr<Widget> m_parent;

@@ -5,11 +5,49 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
+#include <UXCpp/Graphics/Renderer.h>
+#include <algorithm>
+#include <cstdint>
 #include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace uxcpp::graphics {
+
+enum class TextAlign {
+    Left,
+    Center,
+    Right,
+    Justify
+};
+
+struct TextStyle {
+    Color color = Color::Black();
+    float size = 16.0f;
+    bool bold = false;
+    bool italic = false;
+    bool underline = false;
+};
+
+struct TextSpan {
+    std::string text;
+    TextStyle style;
+};
+
+class TextDocument {
+public:
+    void append(std::string text, TextStyle style = {}) {
+        m_spans.push_back(TextSpan{std::move(text), style});
+    }
+
+    const std::vector<TextSpan>& spans() const { return m_spans; }
+
+    bool empty() const { return m_spans.empty(); }
+
+private:
+    std::vector<TextSpan> m_spans;
+};
 
 /**
  * @brief Represents a loaded font face.

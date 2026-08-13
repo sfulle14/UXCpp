@@ -7,14 +7,16 @@
 
 #include <UXCpp/Graphics/Renderer.h>
 #include <GL/gl.h>
+#include <memory>
 #include <iostream>
 #include <UXCpp/Graphics/Text.h>
+#include <cmath>
 
 namespace uxcpp::graphics {
 
 class OpenGLRenderer : public Renderer {
 public:
-    explicit OpenGLRenderer(std::unique_ptr<TextRenderer> textRenderer) 
+    explicit OpenGLRenderer(std::unique_ptr<TextRenderer> textRenderer = nullptr)
         : m_textRenderer(std::move(textRenderer)) {}
 
     void beginFrame() override {
@@ -40,6 +42,14 @@ public:
         glEnd();
     }
 
+    void drawLine(Point a, Point b, Color color) override {
+        glColor4f(color.r, color.g, color.b, color.a);
+        glBegin(GL_LINES);
+            glVertex2f(a.x, a.y);
+            glVertex2f(b.x, b.y);
+        glEnd();
+    }
+
     void drawCircle(Point center, float radius, Color color) override {
         glColor4f(color.r, color.g, color.b, color.a);
         glBegin(GL_TRIANGLE_FAN);
@@ -54,7 +64,7 @@ public:
     /**
      * @brief Draws a focus ring around the specified rectangle.
      */
-    void drawFocusRing(const Rect& rect, Color color) {
+    void drawFocusRing(const Rect& rect, Color color) override {
         glColor4f(color.r, color.g, color.b, color.a);
         glLineWidth(2.0f);
         glBegin(GL_LINE_LOOP);

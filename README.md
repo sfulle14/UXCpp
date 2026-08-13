@@ -23,6 +23,21 @@ UXCpp is a clean-room implementation of a professional GUI framework designed sp
 - **Data Binding**: Reactive `Property<T>` system for automatic UI updates when underlying data changes.
 - **Modal Systems**: Full support for overlay layers, popups, and blocking modal dialogs.
 
+### 📈 Plotting
+- **Line Charts**: A lightweight `PlotWidget` for trend graphs and metrics dashboards.
+- **Auto-Scaling**: Axes adapt to the samples you add.
+- **Legends and Grid Lines**: Included for readability out of the box.
+
+### 📈 Plotting
+- **Line Charts**: A lightweight `PlotWidget` for time series and trend graphs.
+- **Auto-Scaling**: Axes adjust to the data points you add.
+- **Legends and Grid Lines**: Built in for dashboard-style visualizations.
+
+### 📈 Plotting
+- **Line Charts**: A lightweight `PlotWidget` for series-based line plots.
+- **Auto-Scaling**: Axes adjust to the data you add.
+- **Legends and Grid Lines**: Built-in chart readability helpers for dashboards and metrics views.
+
 ## 🚀 Quick Start
 
 ```cpp

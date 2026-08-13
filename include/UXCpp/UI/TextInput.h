@@ -21,7 +21,7 @@ public:
         
         // Draw text or placeholder
         std::string display = m_text.empty() ? m_placeholder : m_text;
-        Color color = m_text.empty() ? graphics::Color{0.7f, 0.7f, 0.7f, 1.0f} : getStyle().foregroundColor;
+        graphics::Color color = m_text.empty() ? graphics::Color{0.7f, 0.7f, 0.7f, 1.0f} : getStyle().foregroundColor;
         
         renderer.drawText({m_bounds.x + 5, m_bounds.y + 5}, display, color);
     }
@@ -38,6 +38,9 @@ public:
         // Simplified text input: only handles basic ASCII for now
         if (key >= 32 && key <= 126) {
             m_text += static_cast<char>(key);
+            return true;
+        } else if (key == 13) { // Enter
+            m_text += '\n';
             return true;
         } else if (key == 8 && !m_text.empty()) { // Backspace
             m_text.pop_back();

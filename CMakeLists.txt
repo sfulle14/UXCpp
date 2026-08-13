@@ -23,6 +23,8 @@ find_package(OpenGL REQUIRED)
 # Project targets
 add_library(UXCpp SHARED 
     src/Core/Application.cpp
+    src/Core/SystemTray.cpp
+    src/Core/MessageBox.cpp
     # Add other source files as they are created
 )
 target_link_libraries(UXCpp PUBLIC glfw OpenGL::GL)

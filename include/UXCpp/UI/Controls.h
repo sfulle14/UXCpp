@@ -6,7 +6,13 @@
 #pragma once
 
 #include <UXCpp/UI\Widget.h>
+#include <UXCpp/UI\DropdownList.h>
+#include <UXCpp/UI\PlotWidget.h>
 #include <UXCpp/Core/Property.h>
+#include <UXCpp/Graphics/TextLayout.h>
+#include <UXCpp/Core/Application.h>
+#include <algorithm>
+#include <vector>
 
 namespace uxcpp::ui {
 
@@ -21,9 +27,10 @@ public:
         // Use TextLayout for multi-line support
         graphics::TextLayout layout(m_text, m_bounds.width - 10.0f);
         const auto& lines = layout.getLines();
+        const float lineHeight = layout.getLineHeight();
 
         for (size_t i = 0; i < lines.size(); ++i) {
-            renderer->drawText({m_bounds.x + 5, m_bounds.y + 5 + (i * 18.0f)}, lines[i].text, getStyle().foregroundColor);
+            renderer.drawText({m_bounds.x + 5, m_bounds.y + 5 + (i * lineHeight)}, lines[i].text, getStyle().foregroundColor);
         }
     }
 
