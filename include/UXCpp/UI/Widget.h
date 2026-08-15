@@ -62,6 +62,8 @@ public:
 
     // Input handling
     virtual bool onPointerDown(graphics::Point p) { return false; }
+    virtual bool onPointerMove(graphics::Point p) { return false; }
+    virtual bool onPointerUp(graphics::Point p) { return false; }
     virtual bool onKeyDown(int key) { return false; }
 
     /**

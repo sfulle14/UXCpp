@@ -45,15 +45,22 @@ public:
 
     void handleMouseMove(float x, float y) {
         if (!m_root) return;
+
+        ui::graphics::Point p{x, y};
+        dispatchPointerMove(m_root, p);
+
         core::DragDropManager::getInstance().updateDragPosition(m_root, x, y);
     }
 
     void handleMouseUp(float x, float y) {
         if (!m_root) return;
 
+        ui::graphics::Point p{x, y};
+        dispatchPointerUp(m_root, p);
+
         // If we were dragging, try to drop on the widget under the mouse
         if (core::DragDropManager::getInstance().isDragging()) {
-            auto target = findWidgetAt(m_root, {x, y});
+            auto target = findWidgetAt(m_root, p);
             if (target && target->onDrop(core::DragDropManager::getInstance().getPayload())) {
                 // Drop accepted
             }
@@ -172,6 +179,45 @@ private:
             openMenuPopup->close();
             return true;
         }
+
+        // 2. Check children of the root widget
+        const auto& children = widget->getChildren();
+        for (auto it = children.rbegin(); it != children.rend(); ++it) {
+            if ((*it)->getBounds().contains(p)) {
+                if (dispatchPointerDown(*it, p)) return true;
+            }
+        }
+
+        // 3. Check this widget itself
+        if (widget->onPointerDown(p)) {
+            setFocus(widget);
+            return true;
+        }
+
+        return false;
+    }
+
+    bool dispatchPointerMove(std::shared_ptr<ui::Widget> widget, ui::graphics::Point p) {
+        const auto& children = widget->getChildren();
+        for (auto it = children.rbegin(); it != children.rend(); ++it) {
+            if ((*it)->getBounds().contains(p)) {
+                if (dispatchPointerMove(*it, p)) return true;
+            }
+        }
+        return widget->onPointerMove(p);
+    }
+
+    bool dispatchPointerUp(std::shared_ptr<ui::Widget> widget, ui::graphics::Point p) {
+        const auto& children = widget->getChildren();
+        for (auto it = children.rbegin(); it != children.rend(); ++it) {
+            if ((*it)->getBounds().contains(p)) {
+                if (dispatchPointerUp(*it, p)) return true;
+            }
+        }
+        return widget->onPointerUp(p);
+    }
+
+    std::shared_ptr<ui::Widget> findWidgetAt(std::shared_ptr<ui::Widget> root, ui::graphics::Point p) {
 
         // 2. Check children of the root widget
         const auto& children = widget->getChildren();

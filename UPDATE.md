@@ -2,7 +2,7 @@
 
 This document tracks the remaining work needed to make UXCpp a practical replacement for Qt in real desktop applications.
 
-UXCpp already covers the core UI foundation: retained-mode widgets, signals, layouts, theming, dialogs, tables, trees, plotting, and declarative loading. The remaining work is mostly about platform integration, text quality, accessibility, richer widgets, tooling, and ecosystem modules.
+UXCpp already covers the core UI foundation: retained-mode widgets, signals, layouts, theming, dialogs, tables, trees, plotting, and declarative loading. The remaining work is mostly about platform integration, text quality, accessibility, richer widgets, tooling, application services, and ecosystem modules.
 
 ## Goals
 
@@ -29,25 +29,28 @@ Already implemented:
 - Native message boxes
 - Menu bar and popup menu widgets
 - Table and tree models/views
+- Table proxy models (sorting/filtering)
 - Tab widgets, combo boxes, check boxes, text input
+- Scroll areas and scroll bars
+- Splitter widgets for resizable layouts
 - Basic plotting support
 - Declarative UI loading
 - Animation primitives
+- Resource management system
+- Toolbar widget
+- Undo/Redo framework
 
 Not yet at Qt parity:
-- Text shaping and rich text
-- Accessibility
-- Clipboard, drag and drop, menus, file dialogs, system tray
-- Clipboard, drag and drop, menus, file dialogs, message boxes, system tray (implemented)
-- High-DPI and multi-window polish
-- Full model/view virtualization and delegates
-- Advanced charting
-- Resource system and image pipeline
-- Internationalization infrastructure
-- Undo/redo framework
-- Networking, SQL, XML, and other utility modules
-- Plugin system
-- Designer and debugging tooling
+- Text shaping and rich text (Phase 1)
+- Accessibility bridge to OS and IME support (Phase 2)
+- Native menu bars and high-DPI polish (Phase 3)
+- Model/View virtualization and delegates (Phase 4)
+- Advanced editor widgets and docking (Phase 5)
+- Resource system, images, and advanced charting (Phase 6)
+- Application services (Phase 7)
+- Internationalization infrastructure (Phase 8)
+- Designer and debugging tooling (Phase 9)
+- Plugin system (Phase 10)
 
 ## Roadmap Phases
 
@@ -252,26 +255,7 @@ Acceptance criteria:
 - Language changes can be applied without restarting the app.
 - Assets can ship in a single binary bundle or package.
 
-### Phase 9: Undo/Redo and Application Editing
-Priority: medium
-
-Why this matters:
-This is essential for document editors, design tools, and IDE-style apps.
-
-Work items:
-- Command pattern infrastructure.
-- Undo stack and redo stack.
-- Mergeable commands.
-- Macro commands.
-- History serialization if needed.
-
-Deliverables:
-- Reusable editing history engine.
-
-Acceptance criteria:
-- A text or scene editor can revert and replay actions reliably.
-
-### Phase 10: Tooling and Developer Experience
+### Phase 9: Tooling and Developer Experience
 Priority: medium
 
 Why this matters:
@@ -292,7 +276,7 @@ Deliverables:
 Acceptance criteria:
 - Developers can inspect and debug widget trees without adding custom logging.
 
-### Phase 11: Plugins and Extensibility
+### Phase 10: Plugins and Extensibility
 Priority: medium
 
 Why this matters:
@@ -320,10 +304,9 @@ If the goal is a practical Qt replacement for business software, build in this o
 5. Rich controls and editors.
 6. Resource system and images.
 7. Internationalization.
-8. Undo/redo.
-9. Tooling.
-10. Service modules.
-11. Plugins.
+8. Tooling.
+9. Service modules.
+10. Plugins.
 
 ## Definition of “Full Replacement”
 UXCpp should be considered a full replacement for Qt only when it can cover these categories without major external scaffolding:
@@ -334,7 +317,6 @@ UXCpp should be considered a full replacement for Qt only when it can cover thes
 - rich controls and editors,
 - charts and graphics,
 - resource packaging,
-- undo/redo,
 - and developer tooling.
 
 ## Near-Term Next Steps

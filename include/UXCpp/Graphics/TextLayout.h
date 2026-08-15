@@ -6,6 +6,7 @@
 #pragma once
 
 #include <UXCpp/Graphics/Renderer.h>
+#include <UXCpp/Graphics/FontManager.h>
 #include <cctype>
 #include <string>
 #include <vector>
@@ -33,7 +34,9 @@ public:
 private:
     void wrapText(const std::string& text, float maxWidth, float fontSize) {
         m_lines.clear();
-        m_lineHeight = std::max(12.0f, fontSize * 1.25f);
+        
+        FontFace face{"Sans", static_cast<int>(fontSize)};
+        m_lineHeight = FontManager::getInstance().getLineHeight(face);
 
         std::string currentLine;
         float currentWidth = 0.0f;
@@ -44,10 +47,44 @@ private:
             currentWidth = 0.0f;
         };
 
-        auto measureChar = [fontSize](char c) {
-            if (c == ' ' || c == '\t') return fontSize * 0.45f;
-            if (std::ispunct(static_cast<unsigned char>(c))) return fontSize * 0.5f;
-            return fontSize * 0.6f;
+        for (char c : text) {
+            if (c == '\n') {
+                flushLine();
+                continue;
+            }
+
+            std::string charStr(1, c);
+            float charW = FontManager::getInstance().measureString(charStr, face);
+
+            if (currentWidth + charW > maxWidth && !currentLine.empty()) {
+                // Word wrap: find last space
+                size_t lastSpace = currentLine.find_last_of(" \t");
+                if (lastSpace != std::string::npos) {
+                    std::string word = currentLine.substr(lastSpace + 1);
+                    currentLine = currentLine.substr(0, lastSpace);
+                    
+                    // Recalculate width for the truncated line
+                    currentWidth = FontManager::getInstance().measureString(currentLine, face);
+                    flushLine();
+                    
+                    currentLine = word;
+                    currentWidth = FontManager::getInstance().measureString(word, face);
+                } else {
+                    // Force break if no space found
+                    flushLine();
+                    currentLine = charStr;
+                    currentWidth = charW;
+                }
+            } else {
+                currentLine += c;
+                currentWidth += charW;
+            }
+        }
+
+        if (!currentLine.empty()) {
+            flushLine();
+        }
+    }
         };
 
         auto appendWord = [&](const std::string& word) {

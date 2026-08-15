@@ -20,6 +20,44 @@ public:
         m_model = model;
     }
 
+    void onHeaderClicked(int column) {
+        if (!m_model) return;
+
+        // If the current model is a proxy, we can trigger sorting
+        if (auto proxy = std::dynamic_pointer_cast<core::TableProxyModel>(m_model)) {
+            static bool ascending = true;
+            proxy->setSortColumn(column, ascending);
+            ascending = !ascending;
+        }
+    }
+
+    bool onPointerDown(graphics::Point p) override {
+        if (!m_model) return false;
+
+        float cellW = m_bounds.width / (m_model->columnCount() > 0 ? m_model->columnCount() : 1);
+        float cellH = 25.0f;
+
+        // Check if header was clicked
+        if (p.y < m_bounds.y + cellH) {
+            int col = static_cast<int>((p.x - m_bounds.x) / cellW);
+            if (col >= 0 && col < m_model->columnCount()) {
+                onHeaderClicked(col);
+                return true;
+            }
+        }
+
+        // Check if cells were clicked
+        if (p.y >= m_bounds.y + cellH && p.y <= m_bounds.y + (m_model->rowCount() + 1) * cellH) {
+            int row = static_cast<int>((p.y - (m_bounds.y + cellH)) / cellH);
+            int col = static_cast<int>((p.x - m_bounds.x) / cellW);
+            if (row >= 0 && row < m_model->rowCount() && col >= 0 && col < m_model->columnCount()) {
+                return true; // Selection logic would go here
+            }
+        }
+
+        return false;
+    }
+
     void onDraw(graphics::Renderer& renderer) override {
         if (!m_model) return;
 
