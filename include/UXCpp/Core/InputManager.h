@@ -85,6 +85,11 @@ public:
             return;
         }
 
+        // 3. Handle IME composition if active
+        if (core::IMEBridge::getInstance().getCurrentComposition().empty() == false) {
+            // In a real system, we'd handle specific IME keys here
+        }
+
         if (!m_focusedWidget) return;
         m_focusedWidget->onKeyDown(key);
     }

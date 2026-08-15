@@ -42,8 +42,6 @@ Already implemented:
 
 Not yet at Qt parity:
 - Text shaping and rich text (Phase 1)
-- Accessibility bridge to OS and IME support (Phase 2)
-- Native menu bars and high-DPI polish (Phase 3)
 - Model/View virtualization and delegates (Phase 4)
 - Advanced editor widgets and docking (Phase 5)
 - Resource system, images, and advanced charting (Phase 6)

@@ -8,6 +8,7 @@
 #include <UXCpp/Graphics/Renderer.h>
 #include <UXCpp/Core/Signal.h>
 #include <UXCpp/UI/Style.h>
+#include <UXCpp/UI/AccessibilityTree.h>
 #include <vector>
 #include <memory>
 #include <string>
@@ -49,8 +50,8 @@ public:
     void setAccessibleDescription(std::string desc) { m_accessibleDescription = std::move(desc); }
     const std::string& getAccessibleDescription() const { return m_accessibleDescription; }
 
-    void setAccessibleRole(std::string role) { m_accessibleRole = std::move(role); }
-    const std::string& getAccessibleRole() const { return m_accessibleRole; }
+    void setAccessibleRole(ui::AccessibleRole role) { m_accessibleRole = role; }
+    ui::AccessibleRole getAccessibleRole() const { return m_accessibleRole; }
 
     LayoutParams& layoutParams() { return m_layoutParams; }
     const LayoutParams& layoutParams() const { return m_layoutParams; }
@@ -126,7 +127,7 @@ protected:
     int m_tabIndex = 0;
     std::string m_accessibleName;
     std::string m_accessibleDescription;
-    std::string m_accessibleRole;
+    ui::AccessibleRole m_accessibleRole = ui::AccessibleRole::None;
     LayoutParams m_layoutParams;
     bool m_isFocused = false;
     std::weak_ptr<Widget> m_parent;

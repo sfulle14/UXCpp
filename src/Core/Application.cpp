@@ -8,6 +8,7 @@
 #include <UXCpp/Core/FileDialog.h>
 #include <UXCpp/Core/SystemTray.h>
 #include <UXCpp/Core/MessageBox.h>
+#include <UXCpp/Core/WindowStatePersistence.h>
 #include <UXCpp/Windowing/GLFWWindow.h>
 #include <UXCpp/Graphics/OpenGLRenderer.h>
 #include <UXCpp/Core/InputManager.h>
@@ -60,10 +61,24 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
+// IME Callback (Conceptual - would be registered with OS)
+void ime_composition_callback(const char* text, int caretPos) {
+    core::IMEBridge::getInstance().onCompositionUpdate(text, caretPos);
+}
+
+void ime_commit_callback(const char* text) {
+    core::IMEBridge::getInstance().onCandidateSelected(text);
+}
+
 bool Application::init() {
     std::cout << "[UXCpp] Initializing Application..." << std::endl;
     try {
-        g_mainWindow = std::make_unique<windowing::GLFWWindow>("UXCpp Window", 1280, 720);
+        // Load window state if available
+        int x = 100, y = 100, w = 1280, h = 720;
+        Win32WindowStatePersistence persistence;
+        persistence.loadState("MainWindow", x, y, w, h);
+
+        g_mainWindow = std::make_unique<windowing::GLFWWindow>("UXCpp Window", w, h);
         g_renderer = std::make_unique<graphics::OpenGLRenderer>();
 
         // Set GLFW callbacks
