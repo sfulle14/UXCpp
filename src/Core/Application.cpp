@@ -8,6 +8,7 @@
 #include <UXCpp/Core/FileDialog.h>
 #include <UXCpp/Core/SystemTray.h>
 #include <UXCpp/Core/MessageBox.h>
+#include <UXCpp/Core/NativeMenuService.h>
 #include <UXCpp/Core/WindowStatePersistence.h>
 #include <UXCpp/Windowing/GLFWWindow.h>
 #include <UXCpp/Graphics/OpenGLRenderer.h>
@@ -149,6 +150,14 @@ std::string Application::openFileDialog(const std::string& title, const std::vec
 
 std::string Application::saveFileDialog(const std::string& title, const std::vector<std::string>& filters) {
     return FileDialog::saveFile(title, filters);
+}
+
+void Application::showNativeContextMenu(int x, int y, const std::vector<std::pair<std::string, std::function<void()>>>& items) {
+    std::vector<core::NativeMenuItem> nativeItems;
+    for (const auto& item : items) {
+        nativeItems.push_back({item.first, item.second});
+    }
+    core::NativeMenuService::getInstance().showContextMenu(x, y, nativeItems);
 }
 
 std::shared_ptr<uxcpp::core::SystemTrayIcon> Application::createSystemTrayIcon(const std::string& tooltip) {

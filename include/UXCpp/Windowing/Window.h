@@ -45,6 +45,14 @@ public:
     virtual void pollEvents() = 0;
     virtual void swapBuffers() = 0;
 
+    // Window State Management
+    virtual void setPosition(int x, int y) = 0;
+    virtual void getPosition(int& x, int& y) const = 0;
+    virtual void setMinimized(bool minimized) = 0;
+    virtual bool isMinimized() const = 0;
+    virtual void setMaximized(bool maximized) = 0;
+    virtual bool isMaximized() const = 0;
+
     // Getters
     const std::string& getTitle() const { return m_title; }
     Size getSize() const { return {m_width, m_height}; }

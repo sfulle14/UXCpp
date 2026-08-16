@@ -15,10 +15,10 @@ namespace uxcpp::ui {
 /**
  * @brief A high-contrast theme palette for accessibility.
  */
-struct HighContrastPalette {
-    uint32_t background = 0x000000FF; // Black
-    uint32_t foreground = 0xFFFFFFFF; // White
-    uint32_t accent = 0x00FFFFFF;    // Yellow
+struct HighContrastTheme {
+    static constexpr uint32_t Background = 0x000000FF; // Black
+    static constexpr uint32_t Foreground = 0xFFFFFFFF; // White
+    static constexpr uint32_t Accent = 0x00FFFF00;    // Yellow
 };
 
 class ThemeManager {
@@ -30,20 +30,21 @@ public:
 
     void setHighContrastMode(bool enabled) {
         m_highContrastEnabled = enabled;
-        if (enabled) applyHighContrast(); else applyDefault();
     }
 
     bool isHighContrastEnabled() const { return m_highContrastEnabled; }
 
+    uint32_t getColor(const std::string& key) {
+        if (!m_highContrastEnabled) {
+            return 0xFFFFFFFF; // Default white
+        }
+        if (key == "bg") return HighContrastTheme::Background;
+        if (key == "fg") return HighContrastTheme::Foreground;
+        return HighContrastTheme::Accent;
+    }
+
 private:
-    void applyHighContrast() {
-        // In a real system, this would update the global Theme singleton's colors
-    }
-
-    void applyDefault() {
-        // Restore default theme
-    }
-
+    ThemeManager() = default;
     bool m_highContrastEnabled = false;
 };
 

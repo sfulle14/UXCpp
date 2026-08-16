@@ -45,12 +45,12 @@ public:
     }
 
     /**
-     * @brief Loads a font from file or system.
+     * @brief Adds a font to the fallback chain.
      */
-    bool loadFont(const std::string& family, const std::string& path);
+    void addFallbackFont(const std::string& family, const std::string& path);
 
     /**
-     * @brief Returns the width of a string for a given face.
+     * @brief Returns the width of a string for a given face, using fallbacks if necessary.
      */
     float measureString(const std::string& text, const FontFace& face) const;
 
@@ -63,6 +63,8 @@ public:
 
 private:
     FontManager() = default;
+    std::vector<std::pair<std::string, std::string>> m_fallbackChain;
+    std::map<std::string, std::string> m_loadedFonts;
     // In a real implementation, this would hold FreeType or OS font handles.
 };
 

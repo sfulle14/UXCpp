@@ -85,7 +85,13 @@ public:
             return;
         }
 
-        // 3. Handle IME composition if active
+        // 3. Handle Arrow keys for spatial/linear navigation
+        if ((key == 264 || key == 265 || key == 261 || key == 262) && !ctrl && !shift && !alt) { // GLFW_KEY_UP, DOWN, LEFT, RIGHT
+            handleArrowNavigation(key);
+            return;
+        }
+
+        // 4. Handle IME composition if active
         if (core::IMEBridge::getInstance().getCurrentComposition().empty() == false) {
             // In a real system, we'd handle specific IME keys here
         }
@@ -127,6 +133,31 @@ private:
 
         int nextIdx = (currentIdx + 1) % focusable.size();
         setFocus(focusable[nextIdx]);
+    }
+
+    void handleArrowNavigation(int key) {
+        if (!m_root || !m_focusedWidget) return;
+
+        // Simplified spatial navigation: move to nearest widget in direction of arrow
+        // In a real system, this would use the layout geometry.
+        std::vector<std::shared_ptr<ui::Widget>> focusable;
+        collectFocusableWidgets(m_root, focusable);
+        sortFocusableWidgets(focusable);
+
+        int currentIdx = -1;
+        for (int i = 0; i < (int)focusable.size(); ++i) {
+            if (focusable[i] == m_focusedWidget) {
+                currentIdx = i;
+                break;
+            }
+        }
+
+        if (currentIdx != -1) {
+            // For simplicity, arrows just move linearly through the tab order here
+            int direction = (key == 264 || key == 261) ? -1 : 1; // Up/Left vs Down/Right
+            int nextIdx = (currentIdx + direction + (int)focusable.size()) % focusable.size();
+            setFocus(focusable[nextIdx]);
+        }
     }
 
     void collectFocusableWidgets(std::shared_ptr<ui::Widget> root, std::vector<std::shared_ptr<ui::Widget>>& out) {
@@ -199,6 +230,10 @@ private:
             return true;
         }
 
+        // 4. Handle Right-Click for Context Menus
+        // Note: In a real system, we'd check the mouse button here.
+        // For this slice, we assume right-click is handled via a separate dispatch or flag.
+        
         return false;
     }
 

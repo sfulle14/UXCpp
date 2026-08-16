@@ -41,11 +41,11 @@ Already implemented:
 - Undo/Redo framework
 
 Not yet at Qt parity:
-- Text shaping and rich text (Phase 1)
-- Model/View virtualization and delegates (Phase 4)
-- Advanced editor widgets and docking (Phase 5)
+- Text shaping and rich text (Phase 1) - [PARTIAL]
+- Model/View virtualization and delegates (Phase 4) - [PARTIAL]
+- Advanced editor widgets and docking (Phase 5) - [PARTIAL]
 - Resource system, images, and advanced charting (Phase 6)
-- Application services (Phase 7)
+- Application services (Phase 7) - [PARTIAL]
 - Internationalization infrastructure (Phase 8)
 - Designer and debugging tooling (Phase 9)
 - Plugin system (Phase 10)

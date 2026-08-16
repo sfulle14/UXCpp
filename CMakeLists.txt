@@ -25,6 +25,7 @@ add_library(UXCpp SHARED
     src/Core/Application.cpp
     src/Core/SystemTray.cpp
     src/Core/MessageBox.cpp
+    src/Core/NativeMenuService.cpp
     # Add other source files as they are created
 )
 target_link_libraries(UXCpp PUBLIC glfw OpenGL::GL)
@@ -35,4 +36,7 @@ target_include_directories(UXCpp PUBLIC
 
 # Enable testing
 enable_testing()
+add_executable(test_platform_services tests/test_platform_services.cpp)
+target_link_libraries(test_platform_services PUBLIC UXCpp glfw OpenGL::GL)
+add_test(NAME PlatformServicesTest COMMAND test_platform_services)
 add_subdirectory(tests)

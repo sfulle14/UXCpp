@@ -54,6 +54,7 @@ public:
     std::string openFileDialog(const std::string& title, const std::vector<std::string>& filters = {});
     std::string saveFileDialog(const std::string& title, const std::vector<std::string>& filters = {});
     std::shared_ptr<class SystemTrayIcon> createSystemTrayIcon(const std::string& tooltip);
+    void showNativeContextMenu(int x, int y, const std::vector<std::pair<std::string, std::function<void()>>>& items);
     void showMessageBox(const std::string& title, const std::string& message, MessageBoxType type = MessageBoxType::Information);
 
     // Delete copy/move to ensure singleton integrity

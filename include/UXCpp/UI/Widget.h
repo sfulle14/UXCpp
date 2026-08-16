@@ -68,6 +68,11 @@ public:
     virtual bool onKeyDown(int key) { return false; }
 
     /**
+     * @brief Triggered when the widget is right-clicked.
+     */
+    virtual void onContextMenuRequested(int x, int y) {}
+
+    /**
      * @brief Called when a drag-and-drop operation enters this widget.
      */
     virtual void onDragEnter(const core::DragDropPayload& payload) {}
