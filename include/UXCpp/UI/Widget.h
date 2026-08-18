@@ -61,6 +61,12 @@ public:
     virtual void onUpdate(float deltaTime) {}
     virtual void onDraw(graphics::Renderer& renderer) = 0;
 
+    /**
+     * @brief Returns the widget's unique identifier for debugging and tooling.
+     */
+    const std::string& getId() const { return m_id; }
+    void setId(std::string id) { m_id = std::move(id); }
+
     // Input handling
     virtual bool onPointerDown(graphics::Point p) { return false; }
     virtual bool onPointerMove(graphics::Point p) { return false; }

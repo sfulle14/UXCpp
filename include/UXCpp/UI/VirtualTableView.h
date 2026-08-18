@@ -7,6 +7,7 @@
 
 #include <UXCpp/Core/TableModel.h>
 #include <UXCpp/Core/TableProxyModel.h>
+#include <UXCpp/Core/ItemSelectionModel.h>
 #include <UXCpp/UI/ItemDelegate.h>
 #include <memory>
 #include <vector>
