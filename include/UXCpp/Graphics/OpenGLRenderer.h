@@ -27,6 +27,11 @@ public:
         : m_textRenderer(std::move(textRenderer)) {}
 
     void beginFrame() override {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_LINE_SMOOTH);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        glEnable(GL_BLEND);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
@@ -178,6 +183,14 @@ public:
     void setClipRect(const Rect& rect) override {
         glEnable(GL_SCISSOR_TEST);
         glScissor((GLint)rect.x, (GLint)rect.y, (GLint)rect.width, (GLint)rect.height);
+    }
+
+    void pushClip(const Rect& rect) override {
+        setClipRect(rect); 
+    }
+
+    void popClip() override {
+        glDisable(GL_SCISSOR_TEST);
     }
 
 private:

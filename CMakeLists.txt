@@ -26,7 +26,14 @@ add_library(UXCpp SHARED
     src/Core/SystemTray.cpp
     src/Core/MessageBox.cpp
     src/Core/NativeMenuService.cpp
-    # Add other source files as they are created
+    src/Graphics/SVGCache.cpp
+    src/Services/Services.cpp
+    src/Services/HttpClient.cpp
+    src/Services/SqlDatabase.cpp
+    src/Services/FileSystemWatcher.cpp
+    src/Services/Process.cpp
+    src/Services/Settings.cpp
+    src/Services/SerialPort.cpp
 )
 target_link_libraries(UXCpp PUBLIC glfw OpenGL::GL)
 target_include_directories(UXCpp PUBLIC 

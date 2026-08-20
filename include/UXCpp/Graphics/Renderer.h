@@ -73,6 +73,9 @@ public:
     virtual void scale(float sx, float sy) = 0;
     virtual void rotate(float radians) = 0;
 
+    // Clipping Stack API
+    virtual void pushClip(const Rect& rect) = 0;
+    virtual void popClip() = 0;
     virtual void setClipRect(const Rect& rect) = 0;
     virtual void clear(Color color) = 0;
 };

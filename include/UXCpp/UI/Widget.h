@@ -14,6 +14,7 @@
 #include <string>
 #include <UXCpp/UI/Widget.h>
 #include <UXCpp/UI/LayoutParams.h>
+#include <UXCpp/Graphics/VisualEffects.h>
 
 namespace uxcpp::ui {
 
@@ -34,6 +35,10 @@ public:
     void addChild(std::shared_ptr<Widget> child) {
         child->m_parent = shared_from_this();
         m_children.push_back(child);
+    }
+
+    const std::vector<std::shared_ptr<Widget>>& getChildren() const {
+        return m_children;
     }
 
     // Geometry
@@ -59,7 +64,23 @@ public:
     // Lifecycle & Events
     virtual void onInit() {}
     virtual void onUpdate(float deltaTime) {}
-    virtual void onDraw(graphics::Renderer& renderer) = 0;
+    virtual void onDraw(graphics::Renderer& renderer) override {
+        // Example of using the new Visual Effects system
+        // This would be used by specific widgets like "GlowButton" or "InsetPanel"
+    }
+
+    /**
+     * @brief Helper to render a widget with its associated debug and effect layers.
+     */
+    void renderWithEffects(graphics::Renderer& renderer) {
+        // 1. Draw Shadow/Glow (Bottom Layer)
+        // graphics::VisualEffects::applyGlow(renderer, m_bounds, graphics::Color::White(), 0.5f);
+
+        // 2. Draw Widget Content
+        onDraw(renderer);
+
+        // 3. Draw Overlay/Highlights (Top Layer)
+    }
 
     /**
      * @brief Returns the widget's unique identifier for debugging and tooling.

@@ -58,7 +58,10 @@ private:
         renderer.drawText({bounds.x, bounds.y - 15}, label, color);
 
         // Recurse to children
-        // Note: In a real implementation, we would access m_children via a public getter or friend class
+        for (auto& child : widget->getChildren()) {
+            renderWidgetBounds(renderer, child);
+        }
+    }
     }
 
     bool m_enabled = false;

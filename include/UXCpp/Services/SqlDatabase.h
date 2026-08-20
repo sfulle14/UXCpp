@@ -46,30 +46,10 @@ public:
 
 class SqlDatabaseImpl : public SqlDatabase {
 public:
-    bool open(const std::string& connectionString) override {
-        m_isOpen = true;
-        return true;
-    }
-
-    void close() override {
-        m_isOpen = false;
-    }
-
-    std::future<SqlResult> executeQuery(const std::string& sql) override {
-        return std::async(std::launch::async, [this, sql]() {
-            if (!m_isOpen) return SqlResult{false, "Database not open", {}};
-            // Mock implementation.
-            return SqlResult{true, "", {{"ID", "Name"}, {"1", "UXCpp User"}}};
-        });
-    }
-
-    std::future<int> executeCommand(const std::string& sql) override {
-        return std::async(std::launch::async, [this, sql]() {
-            if (!m_isOpen) return -1;
-            // Mock implementation.
-            return 1; // Rows affected
-        });
-    }
+    bool open(const std::string& connectionString) override;
+    void close() override;
+    std::future<SqlResult> executeQuery(const std::string& sql) override;
+    std::future<int> executeCommand(const std::string& sql) override;
 
 private:
     bool m_isOpen = false;

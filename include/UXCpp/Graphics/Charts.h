@@ -31,7 +31,12 @@ public:
     virtual void render(Renderer& renderer, const Rect& bounds) = 0;
     
     void setZoom(float zoomX, float zoomY) { m_zoomX = zoomX; m_zoomY = zoomY; }
+    float getZoomX() const { return m_zoomX; }
+    float getZoomY() const { return m_zoomY; }
+
     void setPan(float panX, float panY) { m_panX = panX; m_panY = panY; }
+    float getPanX() const { return m_panX; }
+    float getPanY() const { return m_panY; }
 
 protected:
     float m_zoomX = 1.0f, m_zoomY = 1.0f;

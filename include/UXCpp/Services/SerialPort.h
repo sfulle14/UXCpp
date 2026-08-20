@@ -43,23 +43,10 @@ public:
 
 class SerialPortImpl : public SerialPort {
 public:
-    bool open(const std::string& portName, int baudRate) override {
-        m_isOpen = true;
-        return true;
-    }
-
-    bool write(const std::string& data) override {
-        return m_isOpen;
-    }
-
-    SerialResponse read() override {
-        if (!m_isOpen) return {false, ""};
-        return {true, "Mock serial data"};
-    }
-
-    void close() override {
-        m_isOpen = false;
-    }
+    bool open(const std::string& portName, int baudRate) override;
+    bool write(const std::string& data) override;
+    SerialResponse read() override;
+    void close() override;
 
 private:
     bool m_isOpen = false;

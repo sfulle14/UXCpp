@@ -42,25 +42,10 @@ public:
 
 class HttpClientImpl : public HttpClient {
 public:
-    std::future<HttpResponse> get(const std::string& url) override {
-        return std::async(std::launch::async, [url]() {
-            // Mock implementation for clean-room architecture.
-            // In a real production environment, this would wrap libcurl or WinHTTP.
-            return HttpResponse{200, "{\"status\": \"success\", \"message\": \"Mock GET response from " + url + "\"}", {{"Content-Type", "application/json"}}};
-        });
-    }
-
+    std::future<HttpResponse> get(const std::string& url) override;
     std::future<HttpResponse> post(const std::string& url, const std::string& body, 
-                                  const std::string& contentType) override {
-        return std::async(std::launch::async, [url, body]() {
-            // Mock implementation.
-            return HttpResponse{201, "{\"status\": \"created\", \"body\": \"" + body + "\"}", {{"Content-Type", "application/json"}}};
-        });
-    }
-
-    void setTimeout(int seconds) override {
-        m_timeout = seconds;
-    }
+                                  const std::string& contentType = "application/json") override;
+    void setTimeout(int seconds) override;
 
 private:
     int m_timeout = 30;

@@ -30,12 +30,16 @@ public:
     void performLayout() {
         if (m_rows == 0 || m_cols == 0) return;
 
-        float cellW = m_bounds.width / m_cols;
-        float cellH = m_bounds.height / m_rows;
+        const auto& params = layoutParams();
+        float availableW = m_bounds.width - params.padding.left - params.padding.right;
+        float availableH = m_bounds.height - params.padding.top - params.padding.bottom;
+        
+        float cellW = availableW / m_cols;
+        float cellH = availableH / m_rows;
 
         for (auto& cell : m_cells) {
-            float x = m_bounds.x + (cell.col * cellW);
-            float y = m_bounds.y + (cell.row * cellH);
+            float x = m_bounds.x + params.padding.left + (cell.col * cellW);
+            float y = m_bounds.y + params.padding.top + (cell.row * cellH);
             float w = cell.colSpan * cellW;
             float h = cell.rowSpan * cellH;
             cell.widget->setBounds(x, y, w, h);

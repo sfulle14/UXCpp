@@ -40,21 +40,9 @@ public:
 
 class ProcessImpl : public Process {
 public:
-    bool launch(const std::string& command, const std::vector<std::string>& args) override {
-        m_launched = true;
-        return true;
-    }
-
-    std::future<ProcessResult> waitForExit() override {
-        return std::async(std::launch::async, [this]() {
-            // Mock implementation.
-            return ProcessResult{0, "Mock output", ""};
-        });
-    }
-
-    void terminate() override {
-        m_launched = false;
-    }
+    bool launch(const std::string& command, const std::vector<std::string>& args) override;
+    std::future<ProcessResult> waitForExit() override;
+    void terminate() override;
 
 private:
     bool m_launched = false;

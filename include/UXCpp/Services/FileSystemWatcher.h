@@ -40,22 +40,8 @@ public:
 
 class FileSystemWatcherImpl : public FileSystemWatcher {
 public:
-    bool watchDirectory(const std::string& path, EventCallback callback) override {
-        m_running = true;
-        m_worker = std::thread([this, path, callback]() {
-            while (m_running) {
-                // Mock polling for changes.
-                std::this_thread::sleep_for(std::chrono::seconds(2));
-                callback({FileEvent::Modified, path + "/mock_file.txt"});
-            }
-        });
-        return true;
-    }
-
-    void stop() override {
-        m_running = false;
-        if (m_worker.joinable()) m_worker.join();
-    }
+    bool watchDirectory(const std::string& path, EventCallback callback) override;
+    void stop() override;
 
     ~FileSystemWatcherImpl() override {
         stop();

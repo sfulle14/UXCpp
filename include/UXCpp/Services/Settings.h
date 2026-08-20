@@ -39,17 +39,10 @@ public:
 
 class SettingsImpl : public Settings {
 public:
-    void set(const std::string& key, const std::string& value) override {
-        m_data[key] = value;
-    }
-
-    std::optional<std::string> get(const std::string& key) override {
-        if (m_data.count(key)) return m_data[key];
-        return std::nullopt;
-    }
-
-    bool save() override { return true; }
-    bool load() override { return true; }
+    void set(const std::string& key, const std::string& value) override;
+    std::optional<std, std::string> get(const std::string& key) override;
+    bool save() override;
+    bool load() override;
 
 private:
     std::map<std::string, std::string> m_data;
